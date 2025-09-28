@@ -1,11 +1,5 @@
 import type { Preview } from '@storybook/react-vite'
-import type {
-  ClientConfig,
-  SanitizedPermissions,
-  ServerFunctionClientArgs,
-  TypedUser,
-} from 'payload'
-
+import type { ServerFunctionClientArgs } from 'payload'
 import React from 'react'
 
 // Import global styles for all stories
@@ -95,7 +89,7 @@ if (typeof window !== 'undefined') {
 
 // Import PayloadCMS providers
 import { RootProvider } from '../src/providers/Root/index.js'
-import config from './payload.config.js'
+import { config } from './payload.config.js'
 
 // Theme wrapper component
 const ThemeWrapper: React.FC<{ children: React.ReactNode; theme: string }> = ({

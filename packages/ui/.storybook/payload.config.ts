@@ -1,5 +1,18 @@
-// Minimal config for Storybook - using type assertion to bypass strict typing
-const config = {
+import { buildConfig } from 'payload'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { MongoMemoryServer } from 'mongodb-memory-server'
+
+// Create an in-memory MongoDB instance for Storybook
+let mongoServer: MongoMemoryServer
+
+const getMongoUri = async () => {
+  if (!mongoServer) {
+    mongoServer = await MongoMemoryServer.create()
+  }
+  return mongoServer.getUri()
+}
+
+export const config = {
   admin: {
     user: 'users',
     autoRefresh: false,
@@ -16,7 +29,6 @@ const config = {
     },
   },
   blocks: [],
-  blocksMap: {},
   collections: [
     {
       slug: 'posts',
@@ -65,7 +77,8 @@ const config = {
     graphQLPlayground: '/graphql-playground',
   },
   serverURL: 'http://localhost:3000',
-  unauthenticated: false,
-} as any
-
-export default config
+  db: mongooseAdapter({
+    url: await getMongoUri(),
+  }),
+  secret: 'storybook',
+}
