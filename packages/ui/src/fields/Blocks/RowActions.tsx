@@ -45,24 +45,33 @@ export const RowActions: React.FC<{
 
   const [indexToAdd, setIndexToAdd] = React.useState<null | number>(null)
 
+  const hasSingleBlock = blocks.length === 1
+
   return (
     <React.Fragment>
-      <BlocksDrawer
-        addRow={(_, rowBlockType) => {
-          if (typeof addRow === 'function') {
-            void addRow(indexToAdd, rowBlockType)
-          }
-          closeModal(drawerSlug)
-        }}
-        addRowIndex={rowIndex}
-        blocks={blocks}
-        drawerSlug={drawerSlug}
-        labels={labels}
-      />
+      {!hasSingleBlock && (
+        <BlocksDrawer
+          addRow={(_, rowBlockType) => {
+            if (typeof addRow === 'function') {
+              void addRow(indexToAdd, rowBlockType)
+            }
+            closeModal(drawerSlug)
+          }}
+          addRowIndex={rowIndex}
+          blocks={blocks}
+          drawerSlug={drawerSlug}
+          labels={labels}
+        />
+      )}
       <ArrayAction
         addRow={(index) => {
-          setIndexToAdd(index)
-          openModal(drawerSlug)
+          if (hasSingleBlock) {
+            const singleBlockSlug = typeof blocks[0] === 'string' ? blocks[0] : blocks[0].slug
+            void addRow(index, singleBlockSlug)
+          } else {
+            setIndexToAdd(index)
+            openModal(drawerSlug)
+          }
         }}
         copyRow={copyRow}
         duplicateRow={() => duplicateRow(rowIndex, blockType)}

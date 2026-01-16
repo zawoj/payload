@@ -38,18 +38,15 @@ export function addFilterOptionsToFields<ConfigType = unknown>({
     if (newField.type === 'relationship') {
       /**
        * Adjusts relationship fields to filter by tenant
-       * and ensures relationTo cannot be a tenant global collection
+       * Supports both regular tenant-enabled collections and global collections (isGlobal: true)
        */
       if (typeof newField.relationTo === 'string') {
-        if (tenantEnabledGlobalSlugs.includes(newField.relationTo)) {
-          throw new Error(
-            `The collection ${newField.relationTo} is a global collection and cannot be related to a tenant enabled collection.`,
-          )
-        }
-        if (tenantEnabledCollectionSlugs.includes(newField.relationTo)) {
+        // Include both regular tenant-enabled and global collections for filtering
+        const allTenantEnabledSlugs = [...tenantEnabledCollectionSlugs, ...tenantEnabledGlobalSlugs]
+        if (allTenantEnabledSlugs.includes(newField.relationTo)) {
           newField = addFilter({
             field: newField,
-            tenantEnabledCollectionSlugs,
+            tenantEnabledCollectionSlugs: allTenantEnabledSlugs,
             tenantFieldName,
             tenantsArrayFieldName,
             tenantsArrayTenantFieldName,
@@ -58,23 +55,22 @@ export function addFilterOptionsToFields<ConfigType = unknown>({
           })
         }
       } else {
-        for (const relationTo of newField.relationTo) {
-          if (tenantEnabledGlobalSlugs.includes(relationTo)) {
-            throw new Error(
-              `The collection ${relationTo} is a global collection and cannot be related to a tenant enabled collection.`,
-            )
-          }
-          if (tenantEnabledCollectionSlugs.includes(relationTo)) {
-            newField = addFilter({
-              field: newField as RelationshipField,
-              tenantEnabledCollectionSlugs,
-              tenantFieldName,
-              tenantsArrayFieldName,
-              tenantsArrayTenantFieldName,
-              tenantsCollectionSlug,
-              userHasAccessToAllTenants,
-            })
-          }
+        // Include both regular tenant-enabled and global collections for filtering
+        const allTenantEnabledSlugs = [...tenantEnabledCollectionSlugs, ...tenantEnabledGlobalSlugs]
+        // Only add filter once if any collection in relationTo array is tenant-enabled or global
+        const hasTenantEnabledCollection = newField.relationTo.some((relationTo) =>
+          allTenantEnabledSlugs.includes(relationTo),
+        )
+        if (hasTenantEnabledCollection) {
+          newField = addFilter({
+            field: newField as RelationshipField,
+            tenantEnabledCollectionSlugs: allTenantEnabledSlugs,
+            tenantFieldName,
+            tenantsArrayFieldName,
+            tenantsArrayTenantFieldName,
+            tenantsCollectionSlug,
+            userHasAccessToAllTenants,
+          })
         }
       }
     }
