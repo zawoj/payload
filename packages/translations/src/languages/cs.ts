@@ -356,6 +356,7 @@ export const csTranslations: DefaultTranslationsObject = {
     newPassword: 'Nové heslo',
     next: 'Další',
     no: 'Ne',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Nebylo vybráno žádné datum',
     noFiltersSet: 'Nenastaveny žádné filtry',
     noLabel: '<Žádný {{label}}>',

@@ -341,6 +341,7 @@ export const zhTranslations: DefaultTranslationsObject = {
     newPassword: '新密码',
     next: '下一个',
     no: '否',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: '未选择日期',
     noFiltersSet: '没有设置过滤条件',
     noLabel: '<没有 {{label}}>',

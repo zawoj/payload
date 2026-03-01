@@ -359,6 +359,7 @@ export const hyTranslations: DefaultTranslationsObject = {
     newPassword: 'Նոր գաղտնաբառ',
     next: 'Հաջորդ',
     no: 'Ոչ',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Չկա ընտրված ամսաթիվ',
     noFiltersSet: 'Ֆիլտրեր սահմանված չեն',
     noLabel: '<Չկա {{label}}>',

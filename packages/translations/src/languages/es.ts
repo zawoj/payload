@@ -363,6 +363,7 @@ export const esTranslations: DefaultTranslationsObject = {
     newPassword: 'Nueva contraseña',
     next: 'Siguiente',
     no: 'No',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'No se seleccionó ninguna fecha',
     noFiltersSet: 'No hay filtros establecidos',
     noLabel: '<Sin {{label}}>',

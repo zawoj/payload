@@ -359,6 +359,7 @@ export const lvTranslations: DefaultTranslationsObject = {
     newPassword: 'Jauna parole',
     next: 'Nākamais',
     no: 'Nē',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Datums nav izvēlēts',
     noFiltersSet: 'Nav uzstādīti filtri',
     noLabel: '<Nav {{label}}>',

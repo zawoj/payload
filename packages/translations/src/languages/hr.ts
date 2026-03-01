@@ -358,6 +358,7 @@ export const hrTranslations: DefaultTranslationsObject = {
     newPassword: 'Nova lozinka',
     next: 'Sljedeće',
     no: 'Ne',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Nije odabran datum',
     noFiltersSet: 'Nema postavljenih filtera',
     noLabel: '<Nema {{label}}>',

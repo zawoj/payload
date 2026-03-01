@@ -355,6 +355,7 @@ export const isTranslations: DefaultTranslationsObject = {
     newPassword: 'Nýtt lykilorð',
     next: 'Næsta',
     no: 'Nei',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Engin dagsetning valin',
     noFiltersSet: 'Engar síur virkar',
     noLabel: '<Ekkert {{label}}>',

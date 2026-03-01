@@ -350,6 +350,7 @@ export const faTranslations: DefaultTranslationsObject = {
     newPassword: 'رمز عبور جدید',
     next: 'بعدی',
     no: 'خیر',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'تاریخی انتخاب نشده است',
     noFiltersSet: 'هیچ فیلتری اعمال نشده است.',
     noLabel: 'بدون {{label}}',

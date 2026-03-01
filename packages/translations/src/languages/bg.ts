@@ -357,6 +357,7 @@ export const bgTranslations: DefaultTranslationsObject = {
     newPassword: 'Нова парола',
     next: 'Следващ',
     no: 'Не',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Не е избрана дата',
     noFiltersSet: 'Няма зададени филтри',
     noLabel: '<Няма {{label}}>',

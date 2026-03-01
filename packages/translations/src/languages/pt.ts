@@ -359,6 +359,7 @@ export const ptTranslations: DefaultTranslationsObject = {
     newPassword: 'Nova Senha',
     next: 'Próximo',
     no: 'Não',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Nenhuma data selecionada',
     noFiltersSet: 'Nenhum filtro definido',
     noLabel: '<Nenhum(a) {{label}}>',

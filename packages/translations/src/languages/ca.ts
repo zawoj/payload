@@ -359,6 +359,7 @@ export const caTranslations: DefaultTranslationsObject = {
     newPassword: 'Nova contrasenya',
     next: 'Seguent',
     no: 'No',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Data not seleccionada',
     noFiltersSet: 'Sense filtres',
     noLabel: '<No {{label}}>',

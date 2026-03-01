@@ -361,6 +361,7 @@ export const ltTranslations: DefaultTranslationsObject = {
     newPassword: 'Naujas slaptažodis',
     next: 'Toliau',
     no: 'Ne',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Pasirinktos datos nėra',
     noFiltersSet: 'Nenustatyti jokie filtrai',
     noLabel: '<Ne {{label}}>',

@@ -354,6 +354,7 @@ export const etTranslations: DefaultTranslationsObject = {
     newPassword: 'Uus parool',
     next: 'Järgmine',
     no: 'Ei',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Kuupäeva ei ole valitud',
     noFiltersSet: 'Filtreid pole määratud',
     noLabel: '<{{label}} puudub>',

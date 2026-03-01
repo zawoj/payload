@@ -358,6 +358,7 @@ export const svTranslations: DefaultTranslationsObject = {
     newPassword: 'Nytt lösenord',
     next: 'Nästa',
     no: 'Nej',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Inget datum valt',
     noFiltersSet: 'Inga filter inställda',
     noLabel: '<Ingen {{label}}>',

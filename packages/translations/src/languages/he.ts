@@ -347,6 +347,7 @@ export const heTranslations: DefaultTranslationsObject = {
     newPassword: 'סיסמה חדשה',
     next: 'הבא',
     no: 'לא',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'לא נבחר תאריך',
     noFiltersSet: 'לא הוגדרו מסננים',
     noLabel: '<ללא {{label}}>',

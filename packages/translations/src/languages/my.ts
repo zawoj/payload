@@ -360,6 +360,7 @@ export const myTranslations: DefaultTranslationsObject = {
     newPassword: 'စကားဝှက် အသစ်',
     next: 'Seterusnya',
     no: 'Tidak',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'ရက်စွဲမရွေးချယ်ထားပါ',
     noFiltersSet: 'စစ်ထုတ်မှုများ မသတ်မှတ်ထားပါ။',
     noLabel: '<မရှိ {{label}}>',

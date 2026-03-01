@@ -359,6 +359,7 @@ export const rsTranslations: DefaultTranslationsObject = {
     newPassword: 'Нова лозинка',
     next: 'Следећи',
     no: 'Не',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Nije odabran datum',
     noFiltersSet: 'Нема постављених филтера',
     noLabel: '<Нема {{label}}>',

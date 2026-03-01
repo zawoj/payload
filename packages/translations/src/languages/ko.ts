@@ -355,6 +355,7 @@ export const koTranslations: DefaultTranslationsObject = {
     newPassword: '새 비밀번호',
     next: '다음',
     no: '아니요',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: '선택된 날짜가 없습니다.',
     noFiltersSet: '설정된 필터 없음',
     noLabel: '<{{label}} 없음>',

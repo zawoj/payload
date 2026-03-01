@@ -361,6 +361,7 @@ export const huTranslations: DefaultTranslationsObject = {
     newPassword: 'Új jelszó',
     next: 'Következő',
     no: 'Nem',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Nincs kiválasztott dátum',
     noFiltersSet: 'Nincs beállítva szűrő',
     noLabel: '<No {{label}}>',

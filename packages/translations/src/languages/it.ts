@@ -360,6 +360,7 @@ export const itTranslations: DefaultTranslationsObject = {
     newPassword: 'Nuova Password',
     next: 'Successivo',
     no: 'No',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Nessuna data selezionata',
     noFiltersSet: 'Nessun filtro impostato',
     noLabel: '<No {{label}}>',

@@ -16,7 +16,9 @@ export const reduceModifiedFieldsToValues = (fields: FormState, unflatten?: bool
 
   const modifiedTopLevelKeys = new Set<string>()
 
-  for (const [path, field] of Object.entries(fields)) {
+  for (const path of Object.keys(fields)) {
+    const field = fields[path]
+
     if (field?.disableFormData) {
       continue
     }
@@ -25,7 +27,7 @@ export const reduceModifiedFieldsToValues = (fields: FormState, unflatten?: bool
     const initialValue = field?.initialValue
 
     if (!isEqual(value, initialValue)) {
-      const topKey = path.split('.')[0]
+      const topKey = path.split('.')[0] as string
       modifiedTopLevelKeys.add(topKey)
     }
   }
@@ -36,12 +38,14 @@ export const reduceModifiedFieldsToValues = (fields: FormState, unflatten?: bool
 
   let data: Record<string, any> = {}
 
-  for (const [path, field] of Object.entries(fields)) {
+  for (const path of Object.keys(fields)) {
+    const field = fields[path]
+
     if (field?.disableFormData) {
       continue
     }
 
-    const topKey = path.split('.')[0]
+    const topKey = path.split('.')[0] as string
 
     if (modifiedTopLevelKeys.has(topKey)) {
       data[path] = field?.value

@@ -356,6 +356,7 @@ export const taTranslations: DefaultTranslationsObject = {
     newPassword: 'புதிய கடவுச்சொல்',
     next: 'அடுத்து',
     no: 'இல்லை',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'தேதி எதுவும் தேர்ந்தெடுக்கப்படவில்லை',
     noFiltersSet: 'வடிகட்டிகள் எதுவும் அமைக்கப்படவில்லை',
     noLabel: '<{{label}} இல்லை>',

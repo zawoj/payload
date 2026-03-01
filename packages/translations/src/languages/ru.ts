@@ -360,6 +360,7 @@ export const ruTranslations: DefaultTranslationsObject = {
     newPassword: 'Новый пароль',
     next: 'Следующий',
     no: 'Нет',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Дата не выбрана',
     noFiltersSet: 'Фильтры не установлены',
     noLabel: 'Без метки',

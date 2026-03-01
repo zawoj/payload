@@ -368,6 +368,7 @@ export const frTranslations: DefaultTranslationsObject = {
     newPassword: 'Nouveau mot de passe',
     next: 'Prochain',
     no: 'Non',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Aucune date sélectionnée',
     noFiltersSet: 'Aucun filtre défini',
     noLabel: '<Pas de {{label}}>',

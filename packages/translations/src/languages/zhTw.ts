@@ -340,6 +340,7 @@ export const zhTwTranslations: DefaultTranslationsObject = {
     newPassword: '新密碼',
     next: '下一頁',
     no: '否',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: '尚未選取日期',
     noFiltersSet: '尚未設定篩選條件',
     noLabel: '<無 {{label}}>',

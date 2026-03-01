@@ -365,6 +365,7 @@ export const nlTranslations: DefaultTranslationsObject = {
     newPassword: 'Nieuw wachtwoord',
     next: 'Volgende',
     no: 'Nee',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Geen datum geselecteerd',
     noFiltersSet: 'Geen filters ingesteld',
     noLabel: 'Geen "{{label}}"',

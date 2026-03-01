@@ -361,6 +361,7 @@ export const trTranslations: DefaultTranslationsObject = {
     newPassword: 'Yeni parola',
     next: 'Sonraki',
     no: 'Hayır',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Tarih seçilmedi',
     noFiltersSet: 'Tanımlı filtre yok',
     noLabel: '<{{label}} yok>',

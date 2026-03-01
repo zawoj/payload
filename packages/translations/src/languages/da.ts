@@ -356,6 +356,7 @@ export const daTranslations: DefaultTranslationsObject = {
     newPassword: 'Ny adgangskode',
     next: 'Næste',
     no: 'Nej',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Ingen dato valgt',
     noFiltersSet: 'Ingen filtre angivet',
     noLabel: '<Ingen {{label}}>',

@@ -359,6 +359,7 @@ export const idTranslations: DefaultTranslationsObject = {
     newPassword: 'Kata Sandi Baru',
     next: 'Berikutnya',
     no: 'Tidak',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Tidak ada tanggal yang dipilih',
     noFiltersSet: 'Tidak ada filter yang diatur',
     noLabel: '<Tidak ada {{label}}>',

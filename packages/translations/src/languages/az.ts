@@ -360,6 +360,7 @@ export const azTranslations: DefaultTranslationsObject = {
     newPassword: 'Yeni şifrə',
     next: 'Növbəti',
     no: 'Xeyr',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Heç bir tarix seçilməyib',
     noFiltersSet: 'Filter təyin edilməyib',
     noLabel: '<Heç bir {{label}}>',

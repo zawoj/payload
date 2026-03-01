@@ -359,6 +359,7 @@ export const rsLatinTranslations: DefaultTranslationsObject = {
     newPassword: 'Nova lozinka',
     next: 'Sledeći',
     no: 'Ne',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Nijedan datum nije odabran',
     noFiltersSet: 'Nema postavljenih filtera',
     noLabel: '<Nema {{label}}>',

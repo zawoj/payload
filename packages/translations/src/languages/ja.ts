@@ -360,6 +360,7 @@ export const jaTranslations: DefaultTranslationsObject = {
     newPassword: '新しいパスワード',
     next: '次',
     no: 'いいえ',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: '日付が選択されていません',
     noFiltersSet: '絞り込みが未設定です。',
     noLabel: '<No {{label}}>',

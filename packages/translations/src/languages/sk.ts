@@ -358,6 +358,7 @@ export const skTranslations: DefaultTranslationsObject = {
     newPassword: 'Nové heslo',
     next: 'Ďalej',
     no: 'Nie',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Nie je vybraný dátum',
     noFiltersSet: 'Nie sú nastavené žiadne filtre',
     noLabel: '<Žiadny {{label}}>',

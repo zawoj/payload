@@ -362,6 +362,7 @@ export const bnBdTranslations: DefaultTranslationsObject = {
     newPassword: 'নতুন পাসওয়ার্ড',
     next: 'পরবর্তী',
     no: 'না',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'কোনো তারিখ নির্বাচন করা হয়নি',
     noFiltersSet: 'কোনো ফিল্টার সেট করা হয়নি',
     noLabel: '<কোনো {{label}} নেই>',

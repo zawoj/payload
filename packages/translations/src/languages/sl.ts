@@ -357,6 +357,7 @@ export const slTranslations: DefaultTranslationsObject = {
     newPassword: 'Novo geslo',
     next: 'Naprej',
     no: 'Ne',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Izbran ni noben datum',
     noFiltersSet: 'Ni nastavljenih filtrov',
     noLabel: '<Brez {{label}}>',

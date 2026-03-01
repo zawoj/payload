@@ -357,6 +357,7 @@ export const viTranslations: DefaultTranslationsObject = {
     newPassword: 'Mật khẩu mới',
     next: 'Tiếp theo',
     no: 'Không',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Không có ngày nào được chọn',
     noFiltersSet: 'Không có bộ lọc nào được áp dụng',
     noLabel: '<Không có {{label}}>',

@@ -363,6 +363,7 @@ export const roTranslations: DefaultTranslationsObject = {
     newPassword: 'Parolă nouă',
     next: 'Următorul',
     no: 'Nu',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Nu a fost selectată nicio dată',
     noFiltersSet: 'Nici un filtru setat',
     noLabel: '<Nici un {{label}}>',

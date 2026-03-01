@@ -350,6 +350,7 @@ export const thTranslations: DefaultTranslationsObject = {
     newPassword: 'รหัสผ่านใหม่',
     next: 'ถัดไป',
     no: 'ไม่',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'ไม่ได้เลือกวันที่',
     noFiltersSet: 'ไม่มีการกรอง',
     noLabel: '<ไม่มี {{label}}>',

@@ -357,6 +357,7 @@ export const plTranslations: DefaultTranslationsObject = {
     newPassword: 'Nowe hasło',
     next: 'Następny',
     no: 'Nie',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Nie wybrano daty',
     noFiltersSet: 'Brak ustawionych filtrów',
     noLabel: '<Bez {{label}}>',

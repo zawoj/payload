@@ -367,6 +367,7 @@ export const deTranslations: DefaultTranslationsObject = {
     newPassword: 'Neues Passwort',
     next: 'Nächste',
     no: 'Nein',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Kein Datum ausgewählt',
     noFiltersSet: 'Keine Filter gesetzt',
     noLabel: '<Kein {{label}}>',

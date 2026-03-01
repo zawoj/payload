@@ -358,6 +358,7 @@ export const nbTranslations: DefaultTranslationsObject = {
     newPassword: 'Nytt passord',
     next: 'Neste',
     no: 'Nei',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Ingen dato valgt',
     noFiltersSet: 'Ingen filtre satt',
     noLabel: '<Ingen {{label}}>',

@@ -357,6 +357,7 @@ export const ukTranslations: DefaultTranslationsObject = {
     newPassword: 'Новий пароль',
     next: 'Наступний',
     no: 'Ні',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'Не вибрано жодної дати',
     noFiltersSet: 'Відсусті фільтри',
     noLabel: '<без {{label}}>',

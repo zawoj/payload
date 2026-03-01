@@ -347,6 +347,7 @@ export const arTranslations: DefaultTranslationsObject = {
     newPassword: 'كلمة مرور جديدة',
     next: 'التالي',
     no: 'لا',
+    noChangesDetected: 'No changes detected.',
     noDateSelected: 'لم يتم اختيار تاريخ',
     noFiltersSet: 'لم يتم تعيين أي عوامل تصفية',
     noLabel: '<لا {{label}}>',
