@@ -316,9 +316,12 @@ export const updateDocument = async <
   // /////////////////////////////////////
 
   if (collectionConfig.versions && !skipVersioning) {
+    const changedFields = computeChangedFields(docWithLocales, result)
+
     await saveVersion({
       id,
       autosave,
+      changedFields,
       collection: collectionConfig,
       docWithLocales: result,
       draft: isSavingDraft,
@@ -402,4 +405,21 @@ export const updateDocument = async <
   }
 
   return result as TransformCollectionWithSelect<TSlug, TSelect>
+}
+
+function computeChangedFields(originalDoc: JsonObject, updatedDoc: JsonObject): string[] {
+  const changed: string[] = []
+  const allKeys = new Set([...Object.keys(originalDoc), ...Object.keys(updatedDoc)])
+
+  for (const key of allKeys) {
+    if (key === 'id' || key === '_id' || key === 'updatedAt' || key === 'createdAt') {
+      continue
+    }
+
+    if (JSON.stringify(originalDoc[key]) !== JSON.stringify(updatedDoc[key])) {
+      changed.push(key)
+    }
+  }
+
+  return changed
 }

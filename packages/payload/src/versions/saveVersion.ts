@@ -12,6 +12,8 @@ import { saveSnapshot } from './saveSnapshot.js'
 
 type Args<T extends JsonObject = JsonObject> = {
   autosave?: boolean
+  /** Top-level field names that changed in this version */
+  changedFields?: string[]
   collection?: SanitizedCollectionConfig
   docWithLocales: T
   draft?: boolean
@@ -38,6 +40,7 @@ export async function saveVersion<TData extends JsonObject = JsonObject>(
 export async function saveVersion<TData extends JsonObject = JsonObject>({
   id,
   autosave,
+  changedFields,
   collection,
   docWithLocales,
   draft,
@@ -137,6 +140,7 @@ export async function saveVersion<TData extends JsonObject = JsonObject>({
 
       const createVersionArgs = {
         autosave: Boolean(autosave),
+        changedFields,
         collectionSlug: undefined as string | undefined,
         createdAt: operation === 'restoreVersion' ? versionData.createdAt : now,
         globalSlug: undefined as string | undefined,
