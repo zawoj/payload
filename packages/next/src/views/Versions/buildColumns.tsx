@@ -12,8 +12,10 @@ import { hasDraftsEnabled } from 'payload/shared'
 import React from 'react'
 
 import { AutosaveCell } from './cells/AutosaveCell/index.js'
+import { ChangedFieldsCell } from './cells/ChangedFields/index.js'
 import { CreatedAtCell, type CreatedAtCellProps } from './cells/CreatedAt/index.js'
 import { IDCell } from './cells/ID/index.js'
+import { UpdatedByCell } from './cells/UpdatedBy/index.js'
 
 export const buildVersionColumns = ({
   collectionConfig,
@@ -72,15 +74,27 @@ export const buildVersionColumns = ({
       }),
     },
     {
-      accessor: 'id',
+      accessor: 'updatedBy',
       active: true,
       field: {
         name: '',
         type: 'text',
       },
-      Heading: <SortColumn disable Label={t('version:versionID')} name="id" />,
+      Heading: <SortColumn disable Label={t('general:editedBy')} name="updatedBy" />,
       renderedCells: docs.map((doc, i) => {
-        return <IDCell id={doc.id} key={i} />
+        return <UpdatedByCell key={i} updatedBy={(doc as any).updatedBy} />
+      }),
+    },
+    {
+      accessor: 'changedFields',
+      active: true,
+      field: {
+        name: '',
+        type: 'text',
+      },
+      Heading: <SortColumn disable Label={t('version:changes')} name="changedFields" />,
+      renderedCells: docs.map((doc, i) => {
+        return <ChangedFieldsCell changedFields={(doc as any).changedFields} key={i} />
       }),
     },
   ]
@@ -106,6 +120,19 @@ export const buildVersionColumns = ({
       }),
     })
   }
+
+  columns.push({
+    accessor: 'id',
+    active: true,
+    field: {
+      name: '',
+      type: 'text',
+    },
+    Heading: <SortColumn disable Label={t('version:versionID')} name="id" />,
+    renderedCells: docs.map((doc, i) => {
+      return <IDCell id={doc.id} key={i} />
+    }),
+  })
 
   return columns
 }

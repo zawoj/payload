@@ -14,6 +14,7 @@ export async function createVersion<T extends JsonObject = JsonObject>(
   this: DrizzleAdapter,
   {
     autosave,
+    changedFields,
     collectionSlug,
     createdAt,
     parent,
@@ -23,6 +24,7 @@ export async function createVersion<T extends JsonObject = JsonObject>(
     select,
     snapshot,
     updatedAt,
+    updatedBy,
     versionData,
   }: CreateVersionArgs<T>,
 ): Promise<TypeWithVersion<T>> {
@@ -43,12 +45,14 @@ export async function createVersion<T extends JsonObject = JsonObject>(
 
   const data: Record<string, unknown> = {
     autosave,
+    changedFields,
     createdAt,
     latest: true,
     parent,
     publishedLocale,
     snapshot,
     updatedAt,
+    updatedBy,
     version,
   }
 

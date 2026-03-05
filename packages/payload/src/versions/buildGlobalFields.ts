@@ -10,6 +10,8 @@ export const buildVersionGlobalFields = <T extends boolean = false>(
   global: SanitizedGlobalConfig,
   flatten?: T,
 ): true extends T ? FlattenedField[] : Field[] => {
+  const authCollectionSlug = config.collections?.find((c) => c.auth)?.slug || 'users'
+
   const fields: FlattenedField[] = [
     {
       name: 'version',
@@ -34,6 +36,21 @@ export const buildVersionGlobalFields = <T extends boolean = false>(
         disabled: true,
       },
       index: true,
+    },
+    {
+      name: 'updatedBy',
+      type: 'relationship',
+      admin: {
+        disabled: true,
+      },
+      relationTo: authCollectionSlug,
+    },
+    {
+      name: 'changedFields',
+      type: 'json',
+      admin: {
+        disabled: true,
+      },
     },
   ]
 

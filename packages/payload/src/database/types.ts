@@ -410,6 +410,8 @@ export type DeleteVersionsArgs = {
 
 export type CreateVersionArgs<T extends JsonObject = JsonObject> = {
   autosave: boolean
+  /** Top-level field names that changed in this version compared to the previous one */
+  changedFields?: string[]
   collectionSlug: CollectionSlug
   createdAt: string
   /** ID of the parent document for which the version should be created for */
@@ -429,6 +431,8 @@ export type CreateVersionArgs<T extends JsonObject = JsonObject> = {
    */
   snapshot?: true
   updatedAt: string
+  /** The user ID who created this version */
+  updatedBy?: number | string
   versionData: T
 }
 
@@ -438,6 +442,8 @@ export type CreateVersion = <T extends JsonObject = JsonObject>(
 
 export type CreateGlobalVersionArgs<T extends JsonObject = JsonObject> = {
   autosave: boolean
+  /** Top-level field names that changed in this version compared to the previous one */
+  changedFields?: string[]
   createdAt: string
   globalSlug: GlobalSlug
   publishedLocale?: string
@@ -455,6 +461,8 @@ export type CreateGlobalVersionArgs<T extends JsonObject = JsonObject> = {
    */
   snapshot?: true
   updatedAt: string
+  /** The user ID who created this version */
+  updatedBy?: number | string
   versionData: T
 }
 

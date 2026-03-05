@@ -133,6 +133,8 @@ export async function saveVersion<TData extends JsonObject = JsonObject>({
     }
 
     if (createNewVersion) {
+      const userId = req?.user?.id
+
       const createVersionArgs = {
         autosave: Boolean(autosave),
         collectionSlug: undefined as string | undefined,
@@ -144,6 +146,7 @@ export async function saveVersion<TData extends JsonObject = JsonObject>({
         returning,
         select: getQueryDraftsSelect({ select }),
         updatedAt: now,
+        updatedBy: userId,
         versionData,
       }
 

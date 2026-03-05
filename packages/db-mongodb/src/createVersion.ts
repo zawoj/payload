@@ -10,6 +10,7 @@ export const createVersion: CreateVersion = async function createVersion(
   this: MongooseAdapter,
   {
     autosave,
+    changedFields,
     collectionSlug,
     createdAt,
     parent,
@@ -18,6 +19,7 @@ export const createVersion: CreateVersion = async function createVersion(
     returning,
     snapshot,
     updatedAt,
+    updatedBy,
     versionData,
   },
 ) {
@@ -29,12 +31,14 @@ export const createVersion: CreateVersion = async function createVersion(
 
   const data = {
     autosave,
+    changedFields,
     createdAt,
     latest: true,
     parent,
     publishedLocale,
     snapshot,
     updatedAt,
+    updatedBy,
     version: versionData,
   }
   if (!data.createdAt) {
