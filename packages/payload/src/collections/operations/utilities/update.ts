@@ -407,19 +407,66 @@ export const updateDocument = async <
   return result as TransformCollectionWithSelect<TSlug, TSelect>
 }
 
+const SKIP_KEYS = new Set([
+  '_id',
+  '_status',
+  'blockName',
+  'blockType',
+  'createdAt',
+  'id',
+  'updatedAt',
+])
+
 function computeChangedFields(originalDoc: JsonObject, updatedDoc: JsonObject): string[] {
   const changed: string[] = []
-  const allKeys = new Set([...Object.keys(originalDoc), ...Object.keys(updatedDoc)])
+  diffObjects(originalDoc, updatedDoc, '', changed)
+  return changed
+}
+
+function diffObjects(
+  original: JsonObject | undefined,
+  updated: JsonObject | undefined,
+  prefix: string,
+  result: string[],
+): void {
+  const a = original || {}
+  const b = updated || {}
+  const allKeys = new Set([...Object.keys(a), ...Object.keys(b)])
 
   for (const key of allKeys) {
-    if (key === 'id' || key === '_id' || key === 'updatedAt' || key === 'createdAt') {
+    if (SKIP_KEYS.has(key)) {
       continue
     }
 
-    if (JSON.stringify(originalDoc[key]) !== JSON.stringify(updatedDoc[key])) {
-      changed.push(key)
+    const path = prefix ? `${prefix}.${key}` : key
+    const valA = a[key]
+    const valB = b[key]
+
+    if (valA === valB) {
+      continue
+    }
+
+    if (Array.isArray(valA) && Array.isArray(valB)) {
+      if (JSON.stringify(valA) !== JSON.stringify(valB)) {
+        result.push(path)
+      }
+      continue
+    }
+
+    if (
+      valA !== null &&
+      valB !== null &&
+      typeof valA === 'object' &&
+      typeof valB === 'object' &&
+      !Array.isArray(valA) &&
+      !Array.isArray(valB)
+    ) {
+      diffObjects(valA as JsonObject, valB as JsonObject, path, result)
+      continue
+    }
+
+    if (JSON.stringify(valA) !== JSON.stringify(valB)) {
+      result.push(path)
     }
   }
-
-  return changed
 }
