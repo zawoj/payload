@@ -64,7 +64,7 @@ export async function VersionsView(props: DocumentViewServerProps) {
 
   const versionsData: PaginatedDocs = await fetchVersions({
     collectionSlug,
-    depth: 0,
+    depth: 1,
     globalSlug,
     limit: limitToUse,
     overrideAccess: false,
