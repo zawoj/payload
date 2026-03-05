@@ -38,7 +38,6 @@ export const enforceMaxVersions = async ({
         page: max + 1,
         pagination: false,
         req,
-        select: { updatedAt: true },
         sort: '-updatedAt',
         where,
       })
@@ -51,7 +50,6 @@ export const enforceMaxVersions = async ({
         page: max + 1,
         pagination: false,
         req,
-        select: { updatedAt: true },
         sort: '-updatedAt',
         where,
       })

@@ -77,9 +77,8 @@ export async function saveVersion<TData extends JsonObject = JsonObject>({
         limit: 1,
         pagination: false,
         req,
-        select: { autosave: true, createdAt: true },
         sort: '-updatedAt',
-      }
+      } as const
 
       if (collection) {
         ;({ docs } = await payload.db.findVersions<TData>({

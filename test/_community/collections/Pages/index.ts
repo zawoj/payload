@@ -7,6 +7,14 @@ export const PagesCollection: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
   },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 2000,
+      },
+    },
+    maxPerDoc: 20,
+  },
   fields: [
     {
       name: 'title',
