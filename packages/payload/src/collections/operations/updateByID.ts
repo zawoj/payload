@@ -50,6 +50,7 @@ export type Arguments<TSlug extends CollectionSlug> = {
   req: PayloadRequest
   select?: SelectType
   showHiddenFields?: boolean
+  skipVersioning?: boolean
   trash?: boolean
 }
 
@@ -99,6 +100,7 @@ export const updateByIDOperation = async <
       req,
       select: incomingSelect,
       showHiddenFields,
+      skipVersioning = false,
       trash = false,
     } = args
 
@@ -216,6 +218,7 @@ export const updateByIDOperation = async <
       req,
       select: select!,
       showHiddenFields: showHiddenFields!,
+      skipVersioning,
     })
 
     await unlinkTempFiles({

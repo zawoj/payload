@@ -11,9 +11,18 @@ import { updateOperation } from '../operations/update.js'
 export const updateHandler: PayloadHandler = async (req) => {
   const collection = getRequestCollection(req)
 
-  const { depth, draft, limit, overrideLock, populate, select, sort, trash, where } = parseParams(
-    req.query,
-  )
+  const {
+    depth,
+    draft,
+    limit,
+    overrideLock,
+    populate,
+    select,
+    skipVersioning,
+    sort,
+    trash,
+    where,
+  } = parseParams(req.query)
 
   const result = await updateOperation({
     collection,
@@ -25,6 +34,7 @@ export const updateHandler: PayloadHandler = async (req) => {
     populate,
     req,
     select,
+    skipVersioning,
     sort,
     trash,
     where: where!,

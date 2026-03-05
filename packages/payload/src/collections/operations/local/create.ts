@@ -103,6 +103,11 @@ type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectType> = {
    */
   showHiddenFields?: boolean
   /**
+   * When set to `true`, creating a document will not create a version entry.
+   * @default false
+   */
+  skipVersioning?: boolean
+  /**
    * If you set `overrideAccess` to `false`, you can pass a user to use against the access control checks.
    */
   user?: Document
@@ -153,6 +158,7 @@ export async function createLocal<
     populate,
     select,
     showHiddenFields,
+    skipVersioning,
   } = options
 
   const collection = payload.collections[collectionSlug]
@@ -181,5 +187,6 @@ export async function createLocal<
     req,
     select,
     showHiddenFields,
+    skipVersioning,
   })
 }

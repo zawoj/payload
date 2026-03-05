@@ -52,6 +52,7 @@ export type Arguments<TSlug extends CollectionSlug> = {
   req: PayloadRequest
   select?: SelectType
   showHiddenFields?: boolean
+  skipVersioning?: boolean
   /**
    * Sort the documents, can be a string or an array of strings
    * @example '-createdAt' // Sort DESC by createdAt
@@ -108,6 +109,7 @@ export const updateOperation = async <
       req,
       select: incomingSelect,
       showHiddenFields,
+      skipVersioning = false,
       sort: incomingSort,
       trash = false,
       where,
@@ -263,6 +265,7 @@ export const updateOperation = async <
           req,
           select: select!,
           showHiddenFields: showHiddenFields!,
+          skipVersioning,
         })
 
         if (docShouldCommit) {

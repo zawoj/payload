@@ -84,6 +84,11 @@ export type Options<TSlug extends GlobalSlug, TSelect extends SelectType> = {
    */
   showHiddenFields?: boolean
   /**
+   * When set to `true`, updating a global will not create a version entry.
+   * @default false
+   */
+  skipVersioning?: boolean
+  /**
    * the Global slug to operate against.
    */
   slug: TSlug
@@ -111,6 +116,7 @@ export async function updateGlobalLocal<
     publishSpecificLocale,
     select,
     showHiddenFields,
+    skipVersioning,
   } = options
 
   const globalConfig = payload.globals.config.find((config) => config.slug === globalSlug)
@@ -132,5 +138,6 @@ export async function updateGlobalLocal<
     req: await createLocalReq(options as CreateLocalReqOptions, payload),
     select,
     showHiddenFields,
+    skipVersioning,
   })
 }

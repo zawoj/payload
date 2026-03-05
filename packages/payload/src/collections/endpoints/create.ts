@@ -11,7 +11,7 @@ import { createOperation } from '../operations/create.js'
 export const createHandler: PayloadHandler = async (req) => {
   const collection = getRequestCollection(req)
 
-  const { autosave, depth, draft, populate, select } = parseParams(req.query)
+  const { autosave, depth, draft, populate, select, skipVersioning } = parseParams(req.query)
 
   const publishSpecificLocale = req.query.publishSpecificLocale as string | undefined
 
@@ -25,6 +25,7 @@ export const createHandler: PayloadHandler = async (req) => {
     publishSpecificLocale,
     req,
     select,
+    skipVersioning,
   })
 
   return Response.json(

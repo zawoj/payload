@@ -45,6 +45,7 @@ type Args<TSlug extends GlobalSlug> = {
   req: PayloadRequest
   select?: SelectType
   showHiddenFields?: boolean
+  skipVersioning?: boolean
   slug: string
 }
 
@@ -73,6 +74,7 @@ export const updateOperation = async <
     req,
     select: incomingSelect,
     showHiddenFields,
+    skipVersioning = false,
   } = args
 
   try {
@@ -297,7 +299,7 @@ export const updateOperation = async <
     // /////////////////////////////////////
     // Create version
     // /////////////////////////////////////
-    if (globalConfig.versions) {
+    if (globalConfig.versions && !skipVersioning) {
       const { globalType } = result
       result = await saveVersion({
         autosave,

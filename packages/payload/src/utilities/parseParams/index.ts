@@ -24,6 +24,7 @@ type ParsedParams = {
   publishSpecificLocale?: string
   select?: SelectType
   selectedLocales?: string[]
+  skipVersioning?: boolean
   sort?: string[]
   trash?: boolean
   where?: Where
@@ -46,6 +47,7 @@ type RawParams = {
   publishSpecificLocale?: string
   select?: unknown
   selectedLocales?: string
+  skipVersioning?: string
   sort?: string | string[]
   trash?: string
   where?: Where
@@ -54,6 +56,7 @@ type RawParams = {
 export const booleanParams = [
   'autosave',
   'draft',
+  'skipVersioning',
   'trash',
   'overrideLock',
   'pagination',

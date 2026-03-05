@@ -61,6 +61,7 @@ export type SharedUpdateDocumentArgs<TSlug extends CollectionSlug> = {
   req: PayloadRequest
   select: SelectType
   showHiddenFields: boolean
+  skipVersioning?: boolean
 }
 
 /**
@@ -100,6 +101,7 @@ export const updateDocument = async <
   req,
   select,
   showHiddenFields,
+  skipVersioning = false,
 }: SharedUpdateDocumentArgs<TSlug>): Promise<TransformCollectionWithSelect<TSlug, TSelect>> => {
   const password = data?.password
   const isSavingDraft =
@@ -313,7 +315,7 @@ export const updateDocument = async <
   // Create version
   // /////////////////////////////////////
 
-  if (collectionConfig.versions) {
+  if (collectionConfig.versions && !skipVersioning) {
     await saveVersion({
       id,
       autosave,

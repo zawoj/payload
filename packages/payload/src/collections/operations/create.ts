@@ -54,6 +54,7 @@ export type Arguments<TSlug extends CollectionSlug> = {
   select?: SelectType
   selectedLocales?: string[]
   showHiddenFields?: boolean
+  skipVersioning?: boolean
 }
 
 export const createOperation = async <
@@ -111,6 +112,7 @@ export const createOperation = async <
       select: incomingSelect,
       selectedLocales,
       showHiddenFields,
+      skipVersioning = false,
     } = args
 
     let { data } = args
@@ -277,7 +279,7 @@ export const createOperation = async <
     // Create version
     // /////////////////////////////////////
 
-    if (collectionConfig.versions) {
+    if (collectionConfig.versions && !skipVersioning) {
       await saveVersion({
         id: result.id,
         autosave,

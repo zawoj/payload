@@ -114,6 +114,11 @@ export type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectType
    */
   showHiddenFields?: boolean
   /**
+   * When set to `true`, creating or updating a document will not create a version entry.
+   * @default false
+   */
+  skipVersioning?: boolean
+  /**
    * When set to `true`, the operation will update both normal and trashed (soft-deleted) documents.
    * To update only trashed documents, pass `trash: true` and combine with a `where` clause filtering by `deletedAt`.
    * By default (`false`), the update will only include normal documents and exclude those with a `deletedAt` field.
@@ -225,6 +230,7 @@ async function updateLocal<
     publishSpecificLocale,
     select,
     showHiddenFields,
+    skipVersioning,
     sort,
     trash = false,
     where,
@@ -259,6 +265,7 @@ async function updateLocal<
     req,
     select,
     showHiddenFields,
+    skipVersioning,
     sort,
     trash,
     where,
