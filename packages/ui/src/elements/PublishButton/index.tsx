@@ -28,6 +28,7 @@ export function PublishButton({ label: labelProp }: PublishButtonClientProps) {
     globalSlug,
     hasPublishedDoc,
     hasPublishPermission,
+    mostRecentVersionIsAutosaved,
     setHasPublishedDoc,
     setMostRecentVersionIsAutosaved,
     setUnpublishedVersionCount,
@@ -65,10 +66,10 @@ export function PublishButton({ label: labelProp }: PublishButtonClientProps) {
 
   const hasNewerVersions = unpublishedVersionCount > 0
 
-  const canPublish =
-    hasPublishPermission &&
-    (modified || hasNewerVersions || !hasPublishedDoc) &&
-    uploadStatus !== 'uploading'
+  const hasRealChanges =
+    modified || (hasNewerVersions && !mostRecentVersionIsAutosaved) || !hasPublishedDoc
+
+  const canPublish = hasPublishPermission && hasRealChanges && uploadStatus !== 'uploading'
 
   const scheduledPublishEnabled = hasScheduledPublishEnabled(entityConfig)
 
