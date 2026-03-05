@@ -34,9 +34,6 @@ type Result = Promise<{
   versionCount: number
 }>
 
-// TODO: in the future, we can parallelize some of these queries
-// this will speed up the API by ~30-100ms or so
-// Note from the future: I have attempted parallelizing these queries, but it made this function almost 2x slower.
 export const getVersions = async ({
   id: idArg,
   collectionConfig,
@@ -60,7 +57,6 @@ export const getVersions = async ({
   const shouldFetchVersions = Boolean(versionsConfig && docPermissions?.readVersions)
 
   if (!shouldFetchVersions) {
-    // Without readVersions permission, determine published status from the _status field
     const hasPublishedDoc = doc?._status !== 'draft'
 
     return {
@@ -81,85 +77,75 @@ export const getVersions = async ({
       }
     }
 
+    const parentWhere = combineQueries(
+      { and: [{ parent: { equals: id } }] },
+      extractAccessFromPermission(docPermissions.readVersions),
+    )
+
     if (hasDraftsEnabled(collectionConfig)) {
-      // Find out if a published document exists
-      if (doc?._status === 'published') {
-        publishedDoc = doc
-      } else {
-        publishedDoc = (
-          await payload.find({
+      // Phase 1: Run published doc check + autosave check + total count in parallel.
+      // These are independent queries that don't depend on each other.
+      const publishedDocPromise =
+        doc?._status === 'published'
+          ? Promise.resolve(doc)
+          : payload
+              .find({
+                collection: collectionConfig.slug,
+                depth: 0,
+                limit: 1,
+                locale: locale || undefined,
+                pagination: false,
+                select: { updatedAt: true },
+                user,
+                where: {
+                  and: [
+                    { or: [{ _status: { equals: 'published' } }, { _status: { exists: false } }] },
+                    { id: { equals: id } },
+                  ],
+                },
+              })
+              .then((res) => res?.docs?.[0])
+
+      const autosavePromise = hasAutosaveEnabled(collectionConfig)
+        ? payload.findVersions({
             collection: collectionConfig.slug,
             depth: 0,
             limit: 1,
-            locale: locale || undefined,
-            pagination: false,
-            select: {
-              updatedAt: true,
-            },
+            select: { autosave: true },
             user,
-            where: {
-              and: [
-                {
-                  or: [
-                    {
-                      _status: {
-                        equals: 'published',
-                      },
-                    },
-                    {
-                      _status: {
-                        exists: false,
-                      },
-                    },
-                  ],
-                },
-                {
-                  id: {
-                    equals: id,
-                  },
-                },
-              ],
-            },
+            where: parentWhere,
           })
-        )?.docs?.[0]
-      }
+        : Promise.resolve(null)
 
+      const totalCountPromise = payload.countVersions({
+        collection: collectionConfig.slug,
+        depth: 0,
+        user,
+        where: parentWhere,
+      })
+
+      const [publishedDocResult, autosaveResult, totalCountResult] = await Promise.all([
+        publishedDocPromise,
+        autosavePromise,
+        totalCountPromise,
+      ])
+
+      publishedDoc = publishedDocResult
       if (publishedDoc) {
         hasPublishedDoc = true
       }
 
-      if (hasAutosaveEnabled(collectionConfig)) {
-        const mostRecentVersion = await payload.findVersions({
-          collection: collectionConfig.slug,
-          depth: 0,
-          limit: 1,
-          select: {
-            autosave: true,
-          },
-          user,
-          where: combineQueries(
-            {
-              and: [
-                {
-                  parent: {
-                    equals: id,
-                  },
-                },
-              ],
-            },
-            extractAccessFromPermission(docPermissions.readVersions),
-          ),
-        })
-
-        if (
-          mostRecentVersion.docs[0] &&
-          'autosave' in mostRecentVersion.docs[0] &&
-          mostRecentVersion.docs[0].autosave
-        ) {
-          mostRecentVersionIsAutosaved = true
-        }
+      if (
+        autosaveResult?.docs?.[0] &&
+        'autosave' in autosaveResult.docs[0] &&
+        autosaveResult.docs[0].autosave
+      ) {
+        mostRecentVersionIsAutosaved = true
       }
 
+      versionCount = totalCountResult.totalDocs
+
+      // Phase 2: Unpublished count depends on publishedDoc.updatedAt
       if (publishedDoc?.updatedAt) {
         ;({ totalDocs: unpublishedVersionCount } = await payload.countVersions({
           collection: collectionConfig.slug,
@@ -167,87 +153,73 @@ export const getVersions = async ({
           where: combineQueries(
             {
               and: [
-                {
-                  parent: {
-                    equals: id,
-                  },
-                },
-                {
-                  'version._status': {
-                    equals: 'draft',
-                  },
-                },
-                {
-                  updatedAt: {
-                    greater_than: publishedDoc.updatedAt,
-                  },
-                },
+                { parent: { equals: id } },
+                { 'version._status': { equals: 'draft' } },
+                { updatedAt: { greater_than: publishedDoc.updatedAt } },
               ],
             },
             extractAccessFromPermission(docPermissions.readVersions),
           ),
         }))
       }
+    } else {
+      ;({ totalDocs: versionCount } = await payload.countVersions({
+        collection: collectionConfig.slug,
+        depth: 0,
+        user,
+        where: parentWhere,
+      }))
     }
-
-    ;({ totalDocs: versionCount } = await payload.countVersions({
-      collection: collectionConfig.slug,
-      depth: 0,
-      user,
-      where: combineQueries(
-        {
-          and: [
-            {
-              parent: {
-                equals: id,
-              },
-            },
-          ],
-        },
-        extractAccessFromPermission(docPermissions.readVersions),
-      ),
-    }))
   }
 
   if (globalConfig) {
-    // Find out if a published document exists
     if (hasDraftsEnabled(globalConfig)) {
-      if (doc?._status === 'published') {
-        publishedDoc = doc
-      } else {
-        publishedDoc = await payload.findGlobal({
-          slug: globalConfig.slug,
-          depth: 0,
-          locale,
-          select: {
-            updatedAt: true,
-          },
-          user,
-        })
-      }
+      const publishedDocPromise =
+        doc?._status === 'published'
+          ? Promise.resolve(doc)
+          : payload.findGlobal({
+              slug: globalConfig.slug,
+              depth: 0,
+              locale,
+              select: { updatedAt: true },
+              user,
+            })
 
+      const autosavePromise = hasAutosaveEnabled(globalConfig)
+        ? payload.findGlobalVersions({
+            slug: globalConfig.slug,
+            limit: 1,
+            select: { autosave: true },
+            user,
+          })
+        : Promise.resolve(null)
+
+      const totalCountPromise = payload.countGlobalVersions({
+        depth: 0,
+        global: globalConfig.slug,
+        user,
+      })
+
+      const [publishedDocResult, autosaveResult, totalCountResult] = await Promise.all([
+        publishedDocPromise,
+        autosavePromise,
+        totalCountPromise,
+      ])
+
+      publishedDoc = publishedDocResult
       if (publishedDoc?._status === 'published') {
         hasPublishedDoc = true
       }
 
-      if (hasAutosaveEnabled(globalConfig)) {
-        const mostRecentVersion = await payload.findGlobalVersions({
-          slug: globalConfig.slug,
-          limit: 1,
-          select: {
-            autosave: true,
-          },
-          user,
-        })
-
-        if (
-          mostRecentVersion.docs[0] &&
-          'autosave' in mostRecentVersion.docs[0] &&
-          mostRecentVersion.docs[0].autosave
-        ) {
-          mostRecentVersionIsAutosaved = true
-        }
+      if (
+        autosaveResult?.docs?.[0] &&
+        'autosave' in autosaveResult.docs[0] &&
+        autosaveResult.docs[0].autosave
+      ) {
+        mostRecentVersionIsAutosaved = true
       }
+
+      versionCount = totalCountResult.totalDocs
 
       if (publishedDoc?.updatedAt) {
         ;({ totalDocs: unpublishedVersionCount } = await payload.countGlobalVersions({
@@ -257,29 +229,21 @@ export const getVersions = async ({
           where: combineQueries(
             {
               and: [
-                {
-                  'version._status': {
-                    equals: 'draft',
-                  },
-                },
-                {
-                  updatedAt: {
-                    greater_than: publishedDoc.updatedAt,
-                  },
-                },
+                { 'version._status': { equals: 'draft' } },
+                { updatedAt: { greater_than: publishedDoc.updatedAt } },
               ],
             },
             extractAccessFromPermission(docPermissions.readVersions),
           ),
         }))
       }
+    } else {
+      ;({ totalDocs: versionCount } = await payload.countGlobalVersions({
+        depth: 0,
+        global: globalConfig.slug,
+        user,
+      }))
     }
-
-    ;({ totalDocs: versionCount } = await payload.countGlobalVersions({
-      depth: 0,
-      global: globalConfig.slug,
-      user,
-    }))
   }
 
   return {

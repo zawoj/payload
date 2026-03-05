@@ -77,6 +77,7 @@ export async function saveVersion<TData extends JsonObject = JsonObject>({
         limit: 1,
         pagination: false,
         req,
+        select: { autosave: true, createdAt: true },
         sort: '-updatedAt',
       }
 
@@ -84,9 +85,6 @@ export async function saveVersion<TData extends JsonObject = JsonObject>({
         ;({ docs } = await payload.db.findVersions<TData>({
           ...findVersionArgs,
           collection: collection.slug,
-          limit: 1,
-          pagination: false,
-          req,
           where: {
             parent: {
               equals: id,
@@ -97,9 +95,6 @@ export async function saveVersion<TData extends JsonObject = JsonObject>({
         ;({ docs } = await payload.db.findGlobalVersions<TData>({
           ...findVersionArgs,
           global: global!.slug,
-          limit: 1,
-          pagination: false,
-          req,
         }))
       }
       const [latestVersion] = docs
@@ -193,13 +188,17 @@ export async function saveVersion<TData extends JsonObject = JsonObject>({
   const max = getVersionsMax(collection || global!)
 
   if (createNewVersion && max > 0) {
-    await enforceMaxVersions({
+    // Fire-and-forget: version cleanup does not need to block the response.
+    // It runs after the save completes and doesn't affect the returned document.
+    void enforceMaxVersions({
       id,
       collection,
       global,
       max,
       payload,
       req,
+    }).catch((err) => {
+      payload.logger.error({ err, msg: 'Error enforcing max versions' })
     })
   }
   if (returning === false) {

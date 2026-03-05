@@ -314,7 +314,7 @@ export const updateDocument = async <
   // /////////////////////////////////////
 
   if (collectionConfig.versions) {
-    result = await saveVersion({
+    await saveVersion({
       id,
       autosave,
       collection: collectionConfig,
@@ -324,6 +324,7 @@ export const updateDocument = async <
       payload,
       publishSpecificLocale,
       req,
+      returning: false,
       snapshot: snapshotToSave,
     })
   }
