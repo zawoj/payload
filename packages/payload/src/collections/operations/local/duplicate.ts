@@ -6,7 +6,7 @@ import type {
   Document,
   PayloadRequest,
   PopulateType,
-  SelectType,
+  SelectConstraint,
   TransformCollectionWithSelect,
 } from '../../../types/index.js'
 import type { CreateLocalReqOptions } from '../../../utilities/createLocalReq.js'
@@ -20,7 +20,7 @@ import { APIError } from '../../../errors/index.js'
 import { createLocalReq } from '../../../utilities/createLocalReq.js'
 import { duplicateOperation } from '../duplicate.js'
 
-type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectType> = {
+type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectConstraint> = {
   /**
    * the Collection slug to operate against.
    */
@@ -89,8 +89,11 @@ type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectType> = {
   user?: Document
 } & Pick<FindOptions<TSlug, TSelect>, 'select'>
 
-export type Options<TSlug extends CollectionSlug, TSelect extends SelectType> =
-  BaseOptions<TSlug, TSelect> & DraftFlagFromCollectionSlug<TSlug>
+export type Options<TSlug extends CollectionSlug, TSelect extends SelectConstraint> = BaseOptions<
+  TSlug,
+  TSelect
+> &
+  DraftFlagFromCollectionSlug<TSlug>
 
 export async function duplicateLocal<
   TSlug extends CollectionSlug,

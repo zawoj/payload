@@ -2,7 +2,7 @@ import type { CollectionSlug, FindOptions } from '../../index.js'
 import type {
   PayloadRequest,
   PopulateType,
-  SelectType,
+  SelectConstraint,
   TransformCollectionWithSelect,
 } from '../../types/index.js'
 import type { Collection, DataFromCollectionSlug } from '../config/types.js'
@@ -26,7 +26,7 @@ import { deleteScheduledPublishJobs } from '../../versions/deleteScheduledPublis
 import { buildAfterOperation } from './utilities/buildAfterOperation.js'
 import { buildBeforeOperation } from './utilities/buildBeforeOperation.js'
 
-export type Arguments<TSlug extends CollectionSlug, TSelect extends SelectType> = {
+export type Arguments<TSlug extends CollectionSlug, TSelect extends SelectConstraint> = {
   collection: Collection
   depth?: number
   disableTransaction?: boolean
@@ -39,7 +39,10 @@ export type Arguments<TSlug extends CollectionSlug, TSelect extends SelectType> 
   trash?: boolean
 } & Pick<FindOptions<TSlug, TSelect>, 'select'>
 
-export const deleteByIDOperation = async <TSlug extends CollectionSlug, TSelect extends SelectType>(
+export const deleteByIDOperation = async <
+  TSlug extends CollectionSlug,
+  TSelect extends SelectConstraint,
+>(
   incomingArgs: Arguments<TSlug, TSelect>,
 ): Promise<TransformCollectionWithSelect<TSlug, TSelect>> => {
   let args = incomingArgs

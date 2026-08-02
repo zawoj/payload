@@ -57,6 +57,7 @@ import type {
 } from '../../index.js'
 import type {
   PayloadRequest,
+  SelectConstraint,
   SelectIncludeType,
   SelectType,
   Sort,
@@ -848,7 +849,7 @@ export type Collection = {
   }
 }
 
-export type BulkOperationResult<TSlug extends CollectionSlug, TSelect extends SelectType> = {
+export type BulkOperationResult<TSlug extends CollectionSlug, TSelect extends SelectConstraint> = {
   docs: TransformCollectionWithSelect<TSlug, TSelect>[]
   errors: {
     id: DataFromCollectionSlug<TSlug>['id']

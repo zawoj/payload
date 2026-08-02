@@ -206,13 +206,27 @@ export type SelectMode = 'exclude' | 'include'
 
 export type SelectType = SelectExcludeType | SelectIncludeType
 
+/**
+ * Constraint for `select` type parameters.
+ *
+ * Generated `*Select` interfaces (e.g. `PostsSelect<true>`) have no index signature, so they are
+ * not assignable to `SelectType` even though they are valid selects. Constraining on `SelectType`
+ * therefore makes it impossible to write a generic wrapper around the Local API, because
+ * `TSelect extends SelectFromCollectionSlug<TSlug>` cannot be forwarded to the transform types.
+ *
+ * Narrowing is unaffected: the transform types below still discriminate on `extends SelectType`,
+ * and `select` arguments are inferred as fresh object literal types, which do get an implicit
+ * index signature.
+ */
+export type SelectConstraint = Record<string, any>
+
 export type ApplyDisableErrors<T, DisableErrors = false> = false extends DisableErrors
   ? T
   : null | T
 
 export type TransformDataWithSelect<
   Data extends Record<string, any>,
-  Select extends SelectType,
+  Select extends SelectConstraint,
 > = Select extends never
   ? Data
   : string extends keyof Select
@@ -252,21 +266,21 @@ export type TransformDataWithSelect<
 
 export type TransformCollectionWithSelect<
   TSlug extends CollectionSlug,
-  TSelect extends SelectType,
+  TSelect extends SelectConstraint,
 > = TSelect extends SelectType
   ? TransformDataWithSelect<DataFromCollectionSlug<TSlug>, TSelect>
   : DataFromCollectionSlug<TSlug>
 
 export type DraftTransformCollectionWithSelect<
   TSlug extends CollectionSlug,
-  TSelect extends SelectType,
+  TSelect extends SelectConstraint,
 > = TSelect extends SelectType
   ? TransformDataWithSelect<QueryDraftDataFromCollectionSlug<TSlug>, TSelect>
   : QueryDraftDataFromCollectionSlug<TSlug>
 
 export type TransformGlobalWithSelect<
   TSlug extends GlobalSlug,
-  TSelect extends SelectType,
+  TSelect extends SelectConstraint,
 > = TSelect extends SelectType
   ? TransformDataWithSelect<DataFromGlobalSlug<TSlug>, TSelect>
   : DataFromGlobalSlug<TSlug>

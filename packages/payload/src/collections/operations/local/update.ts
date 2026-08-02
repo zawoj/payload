@@ -11,7 +11,7 @@ import type {
   Document,
   PayloadRequest,
   PopulateType,
-  SelectType,
+  SelectConstraint,
   Sort,
   TransformCollectionWithSelect,
   Where,
@@ -31,7 +31,7 @@ import { createLocalReq } from '../../../utilities/createLocalReq.js'
 import { updateOperation } from '../update.js'
 import { updateByIDOperation } from '../updateByID.js'
 
-export type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectType> = {
+export type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectConstraint> = {
   /**
    * Whether the current update should be marked as from autosave.
    * `versions.drafts.autosave` should be specified.

@@ -4,7 +4,7 @@ import type {
   JoinQuery,
   Payload,
   RequestContext,
-  SelectType,
+  SelectConstraint,
   TypedFallbackLocale,
   TypedLocale,
 } from '../../../index.js'
@@ -16,10 +16,7 @@ import type {
   TransformCollectionWithSelect,
 } from '../../../types/index.js'
 import type { CreateLocalReqOptions } from '../../../utilities/createLocalReq.js'
-import type {
-  DraftFlagFromCollectionSlug,
-  SelectFromCollectionSlug,
-} from '../../config/types.js'
+import type { DraftFlagFromCollectionSlug, SelectFromCollectionSlug } from '../../config/types.js'
 
 import { APIError } from '../../../errors/index.js'
 import { createLocalReq } from '../../../utilities/createLocalReq.js'
@@ -28,7 +25,7 @@ import { type FindByIDArgs, findByIDOperation } from '../findByID.js'
 type BaseFindByIDOptions<
   TSlug extends CollectionSlug,
   TDisableErrors extends boolean,
-  TSelect extends SelectType,
+  TSelect extends SelectConstraint,
 > = {
   /**
    * the Collection slug to operate against.
@@ -121,7 +118,7 @@ type BaseFindByIDOptions<
 export type Options<
   TSlug extends CollectionSlug,
   TDisableErrors extends boolean,
-  TSelect extends SelectType,
+  TSelect extends SelectConstraint,
 > = BaseFindByIDOptions<TSlug, TDisableErrors, TSelect> & DraftFlagFromCollectionSlug<TSlug>
 
 export async function findByIDLocal<

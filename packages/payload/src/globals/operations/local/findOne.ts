@@ -10,20 +10,18 @@ import type {
   Document,
   PayloadRequest,
   PopulateType,
+  SelectConstraint,
   SelectType,
   TransformGlobalWithSelect,
 } from '../../../types/index.js'
 import type { CreateLocalReqOptions } from '../../../utilities/createLocalReq.js'
-import type {
-  DraftFlagFromGlobalSlug,
-  SelectFromGlobalSlug,
-} from '../../config/types.js'
+import type { DraftFlagFromGlobalSlug, SelectFromGlobalSlug } from '../../config/types.js'
 
 import { APIError } from '../../../errors/index.js'
 import { createLocalReq } from '../../../utilities/createLocalReq.js'
 import { findOneOperation, type GlobalFindOneArgs } from '../findOne.js'
 
-type BaseFindOneOptions<TSlug extends GlobalSlug, TSelect extends SelectType> = {
+type BaseFindOneOptions<TSlug extends GlobalSlug, TSelect extends SelectConstraint> = {
   /**
    * [Context](https://payloadcms.com/docs/hooks/context), which will then be passed to `context` and `req.context`,
    * which can be read by hooks. Useful if you want to pass additional information to the hooks which
@@ -92,8 +90,10 @@ type BaseFindOneOptions<TSlug extends GlobalSlug, TSelect extends SelectType> = 
 } & Pick<FindOptions<string, SelectType>, 'select'> &
   Pick<GlobalFindOneArgs, 'flattenLocales'>
 
-export type Options<TSlug extends GlobalSlug, TSelect extends SelectType> =
-  BaseFindOneOptions<TSlug, TSelect> & DraftFlagFromGlobalSlug<TSlug>
+export type Options<
+  TSlug extends GlobalSlug,
+  TSelect extends SelectConstraint,
+> = BaseFindOneOptions<TSlug, TSelect> & DraftFlagFromGlobalSlug<TSlug>
 
 export async function findOneGlobalLocal<
   TSlug extends GlobalSlug,

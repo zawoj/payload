@@ -1382,6 +1382,7 @@ export type {
   RequiredDataFromCollectionSlug,
   SanitizedCollectionConfig,
   SanitizedJoins,
+  SelectFromCollectionSlug,
   TypeWithID,
   TypeWithTimestamps,
 } from './collections/config/types.js'
@@ -1738,7 +1739,9 @@ export type {
   DataFromGlobalSlug,
   GlobalAdminOptions,
   GlobalConfig,
+  Globals,
   SanitizedGlobalConfig,
+  SelectFromGlobalSlug,
 } from './globals/config/types.js'
 export { docAccessOperation as docAccessOperationGlobal } from './globals/operations/docAccess.js'
 export { findOneOperation } from './globals/operations/findOne.js'

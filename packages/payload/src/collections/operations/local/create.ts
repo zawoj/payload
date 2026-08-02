@@ -2,7 +2,7 @@ import type {
   Document,
   PayloadRequest,
   PopulateType,
-  SelectType,
+  SelectConstraint,
   TransformCollectionWithSelect,
 } from '../../../types/index.js'
 import type { File } from '../../../uploads/types.js'
@@ -29,7 +29,7 @@ import { getFileByPath } from '../../../uploads/getFileByPath.js'
 import { createLocalReq } from '../../../utilities/createLocalReq.js'
 import { createOperation } from '../create.js'
 
-type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectType> = {
+type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectConstraint> = {
   /**
    * the Collection slug to operate against.
    */
@@ -114,7 +114,7 @@ type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectType> = {
 
 export type Options<
   TSlug extends CollectionSlug,
-  TSelect extends SelectType,
+  TSelect extends SelectConstraint,
 > = GeneratedTypes extends { strictDraftTypes: true }
   ? CollectionsWithoutDrafts extends TSlug
     ? {

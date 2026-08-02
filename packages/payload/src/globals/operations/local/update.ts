@@ -4,6 +4,7 @@ import type {
   Document,
   PayloadRequest,
   PopulateType,
+  SelectConstraint,
   SelectType,
   TransformGlobalWithSelect,
 } from '../../../types/index.js'
@@ -26,7 +27,7 @@ import {
 import { createLocalReq } from '../../../utilities/createLocalReq.js'
 import { updateOperation } from '../update.js'
 
-type BaseOptions<TSlug extends GlobalSlug, TSelect extends SelectType> = {
+type BaseOptions<TSlug extends GlobalSlug, TSelect extends SelectConstraint> = {
   /**
    * [Context](https://payloadcms.com/docs/hooks/context), which will then be passed to `context` and `req.context`,
    * which can be read by hooks. Useful if you want to pass additional information to the hooks which
@@ -101,8 +102,11 @@ type BaseOptions<TSlug extends GlobalSlug, TSelect extends SelectType> = {
   user?: Document
 } & Pick<FindOptions<string, SelectType>, 'select'>
 
-export type Options<TSlug extends GlobalSlug, TSelect extends SelectType> =
-  BaseOptions<TSlug, TSelect> & DraftFlagFromGlobalSlug<TSlug>
+export type Options<TSlug extends GlobalSlug, TSelect extends SelectConstraint> = BaseOptions<
+  TSlug,
+  TSelect
+> &
+  DraftFlagFromGlobalSlug<TSlug>
 
 export async function updateGlobalLocal<
   TSlug extends GlobalSlug,

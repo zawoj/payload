@@ -9,7 +9,7 @@ import type {
   Document,
   PayloadRequest,
   PopulateType,
-  SelectType,
+  SelectConstraint,
   TransformCollectionWithSelect,
   Where,
 } from '../../../types/index.js'
@@ -21,7 +21,7 @@ import { createLocalReq } from '../../../utilities/createLocalReq.js'
 import { deleteOperation } from '../delete.js'
 import { deleteByIDOperation } from '../deleteByID.js'
 
-export type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectType> = {
+export type BaseOptions<TSlug extends CollectionSlug, TSelect extends SelectConstraint> = {
   /**
    * the Collection slug to operate against.
    */

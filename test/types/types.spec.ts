@@ -1,14 +1,22 @@
 import type {
+  ApplyDisableErrors,
   BulkOperationResult,
   CollectionSlug,
   CustomDocumentViewConfig,
   DefaultDocumentViewConfig,
+  DraftTransformCollectionWithSelect,
   GeneratedTypes,
+  Globals,
   JoinQuery,
   JsonObject,
   PaginatedDocs,
   PayloadTypesShape,
+  SelectConstraint,
+  SelectFromCollectionSlug,
+  SelectFromGlobalSlug,
   SelectType,
+  TransformCollectionWithSelect,
+  TransformGlobalWithSelect,
   TypedCollectionSelect,
   TypeWithID,
   TypeWithVersion,
@@ -133,6 +141,72 @@ describe('Types testing', () => {
       expect(
         payload.findByID({ id: 'id', collection: 'posts', select: { title: false } }),
       ).type.toBe<Promise<Omit<Post, 'title'>>>()
+    })
+
+    /**
+     * Generated `*Select` interfaces have no index signature, so they are deliberately NOT
+     * assignable to `SelectType` - the transform types rely on that to detect "no select passed".
+     * They must still satisfy `SelectConstraint`, otherwise `SelectFromCollectionSlug` cannot be
+     * forwarded to `TransformCollectionWithSelect` and generic wrappers become impossible to write.
+     */
+    test('SelectFromCollectionSlug satisfies the constraint used by the transform types', () => {
+      expect<SelectFromCollectionSlug<'posts'>>().type.toBeAssignableTo<SelectConstraint>()
+      expect<SelectFromCollectionSlug<'posts'>>().type.not.toBeAssignableTo<SelectType>()
+      expect<SelectFromGlobalSlug<'menu'>>().type.toBeAssignableTo<SelectConstraint>()
+    })
+
+    test('SelectFromCollectionSlug can constrain a generic wrapper around the Local API', () => {
+      type Find = <
+        TSlug extends CollectionSlug,
+        TSelect extends SelectFromCollectionSlug<TSlug>,
+      >(options: {
+        collection: TSlug
+        select?: TSelect
+      }) => Promise<PaginatedDocs<TransformCollectionWithSelect<TSlug, TSelect>>>
+
+      expect(asType<Find>()({ collection: 'posts', select: { title: true } })).type.toBe<
+        Promise<PaginatedDocs<{ id: Post['id']; title?: Post['title'] }>>
+      >()
+    })
+
+    test('a generic wrapper without a select returns the full document', () => {
+      type Find = <
+        TSlug extends CollectionSlug,
+        TSelect extends SelectFromCollectionSlug<TSlug>,
+      >(options: {
+        collection: TSlug
+        select?: TSelect
+      }) => Promise<PaginatedDocs<TransformCollectionWithSelect<TSlug, TSelect>>>
+
+      expect(asType<Find>()({ collection: 'posts' })).type.toBe<Promise<PaginatedDocs<Post>>>()
+    })
+  })
+
+  /**
+   * These types appear in the public signatures of `Payload` methods, so anyone writing a generic
+   * wrapper around the Local API has to be able to name them. They were previously only imported
+   * inside `packages/payload/src/index.ts` and never re-exported, which made those signatures
+   * impossible to replicate. Dropping any of them from the package root breaks this block at
+   * compile time.
+   */
+  describe('public type exports', () => {
+    test('types used in Local API signatures are exported from the package root', () => {
+      expect<SelectFromCollectionSlug<'posts'>>().type.not.toBeNever()
+      expect<SelectFromGlobalSlug<'menu'>>().type.not.toBeNever()
+      expect<SelectConstraint>().type.not.toBeNever()
+      expect<Globals>().type.not.toBeNever()
+      expect<
+        DraftTransformCollectionWithSelect<'draft-posts', { title: true }>
+      >().type.not.toBeNever()
+      expect<ApplyDisableErrors<Post, true>>().type.toBe<null | Post>()
+      expect<TransformCollectionWithSelect<'posts', { title: true }>>().type.toBe<{
+        id: Post['id']
+        title?: Post['title']
+      }>()
+      expect<TransformGlobalWithSelect<'menu', { text: true }>>().type.toBe<{
+        id: Menu['id']
+        text?: Menu['text']
+      }>()
     })
   })
 
@@ -1266,20 +1340,21 @@ describe('Types testing', () => {
 
       test('update with draft:true on draft-enabled collection should work', () => {
         expect(
-          payload.update({ collection: 'draft-posts', id: 1, data: { title: 'Test' }, draft: true }),
+          payload.update({
+            collection: 'draft-posts',
+            id: 1,
+            data: { title: 'Test' },
+            draft: true,
+          }),
         ).type.not.toRaiseError()
       })
 
       test('duplicate with draft:true on non-draft collection should error', () => {
-        expect(
-          payload.duplicate({ collection: 'pages', id: 1, draft: true }),
-        ).type.toRaiseError()
+        expect(payload.duplicate({ collection: 'pages', id: 1, draft: true })).type.toRaiseError()
       })
 
       test('duplicate with draft:false on non-draft collection should error', () => {
-        expect(
-          payload.duplicate({ collection: 'pages', id: 1, draft: false }),
-        ).type.toRaiseError()
+        expect(payload.duplicate({ collection: 'pages', id: 1, draft: false })).type.toRaiseError()
       })
 
       test('duplicate with draft:true on draft-enabled collection should work', () => {
@@ -1301,15 +1376,11 @@ describe('Types testing', () => {
       })
 
       test('global update with draft:true on non-draft global should error', () => {
-        expect(
-          payload.updateGlobal({ slug: 'menu', data: {}, draft: true }),
-        ).type.toRaiseError()
+        expect(payload.updateGlobal({ slug: 'menu', data: {}, draft: true })).type.toRaiseError()
       })
 
       test('global update with draft:false on non-draft global should error', () => {
-        expect(
-          payload.updateGlobal({ slug: 'menu', data: {}, draft: false }),
-        ).type.toRaiseError()
+        expect(payload.updateGlobal({ slug: 'menu', data: {}, draft: false })).type.toRaiseError()
       })
 
       test('global update with draft:true on draft-enabled global should work', () => {
@@ -1318,6 +1389,5 @@ describe('Types testing', () => {
         ).type.not.toRaiseError()
       })
     })
-
   })
 })
